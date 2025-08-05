@@ -1,121 +1,63 @@
-<h1 align="center">🏦 BB | Banco Nexus </h1>
+<h1 align="center">🏦 BB | Banco Nexus</h1>
 
 <p align="center">
   <img src="https://img.shields.io/badge/Python-100%25-blue?style=flat-square&logo=python" />
   <img src="https://img.shields.io/badge/Interface-Terminal-informational?style=flat-square" />
-  <img src="https://img.shields.io/badge/Status-Em%20Desenvolvimento-yellow?style=flat-square" />
+  <img src="https://img.shields.io/badge/Status-Concluído-brightgreen?style=flat-square" />
 </p>
 
 ---
 
 ## ✨ VISÃO GERAL
 
-> Um sistema bancário fictício, escrito em **Python puro**, rodando diretamente no **terminal**, com interface limpa, autenticação, e operações financeiras modernas.
-
-🧠 Ideal para estudantes, iniciantes em desenvolvimento de sistemas e projetos de portfólio.
+> Um sistema bancário completo, fictício, desenvolvido em **Python puro**, com execução no **terminal** e funcionalidades inspiradas em bancos reais. Foco em clareza, organização e simulação realista de uma experiência bancária.
 
 ---
 
-## 💡 IDEIA PRINCIPAL
+## 💡 IDEA PRINCIPAL
 
-O **Banco Verde e Amarelo** é um simulador bancário focado em:
+O **Banco Nexus** é um simulador bancário que reproduz:
 
-- ✅ Transferências via **PIX** → `Nexus Pay`
-- ✅ Consulta e pagamento de **fatura do cartão de crédito**
-- ✅ Interface clara, menus limpos, navegação fluida
-
-📌 Tudo isso com **organização modular** em Python e design orientado a **clareza de código e aprendizado pedagógico**.
+- Transferências via **PIX (Nexus Pay)**
+- Consulta e pagamento de **faturas de cartão de crédito**
+- Investimentos em **CDB**
+- Interface limpa e navegação fluida no terminal
 
 ---
 
 ## 🧰 FUNCIONALIDADES
 
-### ✅ Já disponíveis:
-- [x] 💰 Visualização de saldo da conta
-- [x] ⚡ Transferência via **PIX**
-- [x] 🎨 Interface em terminal customizada
-- [x] 🔐 Login com autenticação básica (nome + senha)
-- [x] 💼 Saldo separado em **conta** e **CDB**
+### ✅ Funcionalidades concluídas:
 
-### 🚧 Em construção:
-- [ ] 📜 Histórico de transações
-- [ ] 📈 Investimentos e resgates
-- [ ] 👥 Cadastro de múltiplos usuários
-- [ ] 💾 Persistência via `.json`
-- [ ] 🧾 Fatura detalhada do cartão
-- [ ] 💸 Pagamento da fatura
-
----
-
-## 🎯 OBJETIVOS PEDAGÓGICOS
-
-🔍 Este projeto é perfeito para quem quer:
-
-- 🧠 Praticar **lógica de programação**
-- 🛠️ Treinar estruturação de sistemas reais com **funções e modularização**
-- 🔁 Simular **fluxos de autenticação, transferências, e pagamentos**
-- 🖥️ Trabalhar com **interfaces baseadas em terminal**
+- 🔐 Login com autenticação de usuário
+- 💰 Visualização de saldo da conta
+- ⚡ Transferência via **PIX (Nexus Pay)**
+- 💳 Consulta de fatura do cartão de crédito
+- 💸 Pagamento da fatura
+- 📊 Saldo separado em **conta corrente** e **CDB**
+- 🎨 Interface terminal customizada e fluida
+- 🧾 Sistema de pontuação e juros no cartão
+- 📜 Histórico básico de movimentações
+- 💾 Persistência de dados via `.json`
+- 👥 Suporte a múltiplos usuários
 
 ---
 
-## 🔐 SENHA PADRÃO
+## 🎯 OBJETIVO DO PROJETO
 
-> Senha padrão para administradores:  
-**`"admin"`**
+O projeto **Banco Nexus** foi desenvolvido com fins **pedagógicos** e de **portfólio**, ideal para:
 
-*Use com sabedoria!*
-
----
-
-## 🤝 COLABORADORES E RESPONSABILIDADES
-
-Este projeto é construído com o esforço conjunto de colaboradores talentosos e comprometidos com a excelência.
-
-### 👨‍🏭 **Colaboradores:**
-| Nome                 | Área principal                  |
-|----------------------|----------------------------------|
-| Moisés Tafarello     | Cartão de Crédito 💳            |
-| Guilherme Ballestrim | Interface & Design Terminal 🎨 |
+- Treinar lógica de programação
+- Aplicar conceitos de modularização e organização de código
+- Simular fluxos bancários com autenticação e operações financeiras
+- Trabalhar com persistência de dados em arquivos `.json`
+- Construir uma aplicação funcional apenas com Python no terminal
 
 ---
 
-### 💳 **Moisés Tafarello – Módulo de Cartão de Crédito**
+## 🖥️ EXECUÇÃO
 
-Responsável por:
-
-- Emissão da **fatura mensal**
-- Cálculo de **juros por atraso**
-- Sistema de **pontuação por uso**
-
-> 🧠 *Sistema de pontos poderá evoluir para um programa de recompensas integrável.*
-
----
-
-### 🎨 **Guilherme Ballestrin – Experiência Visual & Interface**
-
-Responsável por:
-
-- Padronização da interface no terminal
-- Menus intuitivos e estéticos
-- Coerência visual e fluxo do sistema
-
-> 💡 *O design amigável garante acesso e uso mesmo sem GUI.*
-
----
-
-## 📌 NAVEGAÇÃO RÁPIDA
-
-- [Ideia Principal](#-ideia-principal)
-- [Funcionalidades](#-funcionalidades)
-- [Objetivos Pedagógicos](#-objetivos-pedagógicos)
-- [Senha Padrão](#-senha-padrão)
-- [Colaboradores](#-colaboradores-e-responsabilidades)
-
----
-
-## 🎬 DEMONSTRAÇÃO (recomendado)
-
-💡 Adicione um **GIF** ou **print** da execução aqui!
+Para rodar o projeto:
 
 ```bash
 $ python banco.py
