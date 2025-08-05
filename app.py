@@ -35,7 +35,48 @@ def carregar_usuario(cpf):
         return doc.to_dict()
     return None
 
-# A seguir, adaptamos suas funções para usar Firestore
+# Função cartão integrada
+
+def ver_cartao(cpf):
+    while True:
+        limpar_tela()
+        usuario = carregar_usuario(cpf)
+        if not usuario or 'cartao' not in usuario:
+            print('Cartão não disponível para este usuário.')
+            pausa()
+            break
+
+        cartao = usuario['cartao']
+        print('===== CARTÃO DE CRÉDITO =====')
+        print(f"Limite Total: R${cartao['limite_total']:.2f}")
+        print(f"Limite Disponível: R${cartao['limite_disponivel']:.2f}")
+        print(f"Fatura Atual: R${cartao['fatura']:.2f}")
+        print('\n1 - Pagar Fatura')
+        print('2 - Voltar')
+        opcao = input('Escolha uma opção: ')
+
+        if opcao == '1':
+            if cartao['fatura'] == 0:
+                print('Nenhuma fatura pendente!')
+            else:
+                saldo_disponivel = usuario['saldo']
+                if saldo_disponivel >= cartao['fatura']:
+                    usuario['saldo'] -= cartao['fatura']
+                    cartao['limite_disponivel'] += cartao['fatura']
+                    cartao['fatura'] = 0
+                    salvar_usuario(cpf, usuario)
+                    print('Fatura paga com sucesso!')
+                else:
+                    print('Saldo insuficiente para pagar a fatura.')
+            pausa()
+
+        elif opcao == '2':
+            break
+        else:
+            print('Opção inválida.')
+            pausa()
+
+# Outras funções já existentes
 
 def fazer_pix(cpf):
     while True:
@@ -131,7 +172,12 @@ def cadastro():
         "nome": nome,
         "senha": senha,
         'saldo': 50000,
-        'saldo_cdb': 0
+        'saldo_cdb': 0,
+        'cartao': {
+            'limite_total': 120000,
+            'limite_disponivel': 120000,
+            'fatura': 0
+        }
     }
     salvar_usuario(cpf, usuario)
     limpar_tela()
@@ -200,7 +246,7 @@ def menu(cpf):
         print('===== MENU PRINCIPAL BANCO NEXUS =====')
         print(f'Saldo: R${usuario["saldo"]:.2f}')
         print('1 - Fazer Pix')
-        print('2 - Mostrar Saldo')
+        print('2 - Mostrar Saldo / Investimento')
         print('3 - Cartão')
         print('4 - Voltar ao início')
         opcao_inicial = input('Escolha uma opção\n--> ')
@@ -210,9 +256,7 @@ def menu(cpf):
         elif opcao_inicial == '2':
             investimento(cpf)
         elif opcao_inicial == '3':
-            limpar_tela()
-            print("Função 'Cartão' ainda não implementada.")
-            pausa()
+            ver_cartao(cpf)
         elif opcao_inicial == '4':
             break
         else:
