@@ -1,69 +1,161 @@
-import Image from "next/image";
+import type { ComponentType, SVGProps } from "react";
+import { redirect } from "next/navigation";
+import { buscarUsuario } from "@/app/_controllers/usuario_controller";
+import { moeda } from "@/app/_lib/moeda";
+import { usuarioDaSessao } from "@/app/_lib/sessao";
+import { BarraNavegacao } from "./_components/BarraNavegacao";
+import { BotaoSair } from "./_components/BotaoSair";
+import { CartaoAcao } from "./_components/CartaoAcao";
+import { FaixaPromo } from "./_components/FaixaPromo";
+import {
+  IconeCartao,
+  IconeCelular,
+  IconeCodigoBarras,
+  IconePix,
+  IconeRaio,
+  IconeSacoDinheiro,
+  IconeSeta,
+  IconeSino,
+  IconeTransferir,
+} from "./_components/Icones";
+import { LinhaSecao, SecaoConta } from "./_components/SecaoConta";
+import { ListaSalas } from "./_components/ListaSalas";
 
-export default function Home() {
+type AcaoIcone = ComponentType<SVGProps<SVGSVGElement>>;
+
+const ACOES: { icone: AcaoIcone; rotulo: string; selo?: string; href?: string }[] = [
+  { icone: IconePix, rotulo: "Área Pix", href: "/pix" },
+  { icone: IconeCodigoBarras, rotulo: "Pagar" },
+  { icone: IconeSacoDinheiro, rotulo: "Pegar emprestado", selo: "R$ 50.000" },
+  { icone: IconeTransferir, rotulo: "Transferir", href: "/pix" },
+  { icone: IconeCelular, rotulo: "Recarga de celular" },
+];
+
+const FATURA = 16.44;
+const LIMITE_DISPONIVEL = 983.56;
+
+export default async function Home() {
+  const id = await usuarioDaSessao();
+
+  if (id === null) redirect("/login");
+
+  const usuario = await buscarUsuario(id);
+
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert h-5 w-[100px]"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the{" "}
-            <code className="rounded bg-black/[.06] px-1.5 py-0.5 font-mono text-[0.9em] dark:bg-white/[.08]">
-              page.tsx
-            </code>{" "}
-            file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+    <div className="mx-auto flex min-h-dvh w-full max-w-md flex-col border-x border-borda bg-tinta pb-32">
+      <header className="flex items-center justify-between px-5 pt-6 pb-4">
+        <span className="flex items-center gap-2">
+          <span className="grid size-8 place-items-center rounded-lg bg-marca text-sm font-bold">
+            N
+          </span>
+          <span className="text-sm font-semibold tracking-[0.2em]">NEXUS</span>
+        </span>
+
+        <span className="flex items-center gap-2">
+          <span
+            aria-hidden
+            className="grid size-10 place-items-center rounded-full bg-marca text-sm font-semibold"
           >
-            <Image
-              className="dark:invert h-[14px] w-4"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={14}
+            {usuario.nome.charAt(0).toUpperCase()}
+          </span>
+          <button
+            type="button"
+            aria-label="Notificações"
+            className="grid size-10 place-items-center rounded-full bg-superficie-2 text-suave transition-colors hover:text-white"
+          >
+            <IconeSino className="size-5" />
+          </button>
+          <BotaoSair />
+        </span>
+      </header>
+
+      {/* Saldo */}
+      <div className="px-5 pt-2">
+        <button type="button" className="flex items-center gap-1 text-lg font-medium">
+          Conta
+          <IconeSeta className="size-4 text-suave" />
+        </button>
+        <p className="mt-3 text-[32px] font-semibold tracking-tight">
+          {moeda(usuario.saldo)}
+        </p>
+        <p className="mt-1 truncate text-sm text-suave">{usuario.nome}</p>
+      </div>
+
+      {/* Atalhos */}
+      <ul className="mt-7 flex gap-4 overflow-x-auto px-5 pb-2 sem-rolagem">
+        {ACOES.map((acao) => (
+          <li key={acao.rotulo}>
+            <CartaoAcao
+              icone={acao.icone}
+              rotulo={acao.rotulo}
+              selo={acao.selo}
+              href={acao.href}
             />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+          </li>
+        ))}
+      </ul>
+
+      {/* Meus cartões */}
+      <div className="mt-6 px-5">
+        <LinhaSecao titulo="Meus cartões">
+          <IconeCartao className="size-5 text-white" />
+        </LinhaSecao>
+      </div>
+
+      {/* Faixas de destaque */}
+      <ul className="mt-4 flex gap-3 overflow-x-auto px-5 pb-2 sem-rolagem">
+        <li>
+          <FaixaPromo
+            titulo={<span className="text-marca-clara">Pix no Crédito:</span>}
+            descricao="transfira sem usar o saldo da conta."
+          />
+        </li>
+        <li>
+          <FaixaPromo
+            titulo={<span>Chegou a hora</span>}
+            descricao="de aumentar seu limite."
+          />
+        </li>
+      </ul>
+
+      {/* Blocos de conta */}
+      <div className="mt-6">
+        <SecaoConta
+          titulo="Cartão de crédito"
+          rotuloValor="Fatura atual"
+          valor={moeda(FATURA)}
+          complemento={`Limite disponível de ${moeda(LIMITE_DISPONIVEL)}`}
+        >
+          <IconeCartao className="size-5 text-white" />
+        </SecaoConta>
+
+        <SecaoConta
+          titulo="Empréstimo"
+          rotuloValor="Valor disponível de até"
+          valor="R$ 50.000,00"
+        >
+          <IconeRaio className="size-5 text-white" />
+        </SecaoConta>
+      </div>
+
+      <div className="border-b border-borda py-5">
+        <h2 className="px-5 text-lg font-medium">Acompanhe</h2>
+        <div className="mt-3 flex items-center gap-3 px-5">
+          <span className="grid size-9 place-items-center rounded-xl bg-superficie-2">
+            <IconeRaio className="size-5 text-white" />
+          </span>
+          <span className="flex-1 text-[15px] font-medium">
+            Assistente de pagamentos
+          </span>
+          <span className="rounded-md bg-marca px-2 py-0.5 text-xs font-medium">
+            Novo
+          </span>
         </div>
-      </main>
+      </div>
+
+      <ListaSalas />
+
+      <BarraNavegacao />
     </div>
   );
 }
