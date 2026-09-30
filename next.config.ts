@@ -7,9 +7,10 @@ const nextConfig: NextConfig = {
   // <form onSubmit> deixa de rodar o preventDefault: o navegador faz GET
   // nativo e joga a senha na URL.
   //
-  // Escreva so o hostname, sem http:// e sem porta. Se o IP mudar ao trocar de
-  // rede, atualize aqui. Nao use "**": liberaria qualquer origem.
-  allowedDevOrigins: ["10.109.142.42"],
+  // Escreva so o hostname, sem http:// e sem porta. Ha um IP por rede: o da rede
+  // local e o da rede movel/operadora. Se o IP mudar, acrescente aqui (ou
+  // troque o antigo). Nao use "**": liberaria qualquer origem.
+  allowedDevOrigins: ["26.73.96.159", "10.109.142.42"],
 };
 
 export default nextConfig;
